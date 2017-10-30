@@ -1,0 +1,2 @@
+1.明明json格式正确，但就是返回null，且错误提示为4？
+http://lib.csdn.net/article/php/25218
