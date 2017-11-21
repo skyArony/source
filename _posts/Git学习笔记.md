@@ -221,6 +221,11 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
 eval `ssh-agent -s`
 ```
 
+## SSH连接测试
+```
+ssh -T git@"git服务器地址"
+```
+
 Windows下，ssh密钥的目录在~/.ssh,生成文件中带`.pub`后缀的是公钥，add到Gitlab或GitHub的SSH配置中。
 
 ## 常见问题
