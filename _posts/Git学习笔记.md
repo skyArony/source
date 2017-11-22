@@ -16,7 +16,7 @@ categories:
 
 既然已经有如此优秀的教程，那本文的用意便在于对其中一些特别需要注意的点和使用频率特别高的命令记录下，方便以后快捷查看。
 
-# 正文
+# 一、常用命令简介
 
 ## 初始化
 - `cd`到指定目录然后`git init`
@@ -210,7 +210,27 @@ deploy_key_rsa
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"`
 ```
 
-## 配置SSH key
+# 二、完整走一次流程
+## 1. 先去git官网下载最新版git，
+一路点确定安装下去，先不要琢磨每个选项是什么用处，默认就好，以后再次安装时再看自然就明白了。
+
+## 2. 配置和查看用户名
+安装好后第一步，就是先配置用户名和邮箱
+### 修改用户名和地址
+```git
+git config --global user.name "your name"
+git config --global user.email "your email"
+```
+### 查看用户名和地址
+```git
+git config user.name
+git config user.email
+```
+
+## 3. 配置SSH
+若要与远程git服务器进行数据交互，大部分git服务都可以选择git方式和HTTPS方式，而git方式通过配置ssh可以更加方便的使用，所以接下来配置ssh
+
+## 生成SSH key
 `ssh-keygen -t rsa -C "你的邮箱"`   
 - `-t`是指定要创建的密钥类型，可以使用："rsa1"(SSH-1) "rsa"(SSH-2) "dsa"(SSH-2)。
 - `-C`后面加上的是注释
@@ -221,25 +241,42 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
 eval `ssh-agent -s`
 ```
 
+## 用config管理多个密钥
+在`.ssh`目录下新建config文件，写入
+```
+#github【名称】
+Host github.com【主机地址】
+HostName github.com【主机名】
+User git【用户名】
+IdentityFile ~/.ssh/github【私钥路径】
+```
+以上内容为一组，写入保存后即可用
+`
+ssh github.com 来进行连接测试。
+`
+
 ## SSH连接测试
 ```
 ssh -T git@"git服务器地址"
 ```
 
-Windows下，ssh密钥的目录在~/.ssh,生成文件中带`.pub`后缀的是公钥，add到Gitlab或GitHub的SSH配置中。
+**注：**
+- 创建成功后务必进行一次ssh测试
+- Windows下，ssh密钥的目录在~/.ssh,生成文件中带`.pub`后缀的是公钥，add到Gitlab或GitHub的SSH配置中
 
-## 常见问题
-### 查看用户名和地址
-```git
-git config user.name
-git config user.email
-```
-### 修改用户名和地址
-```git
-git config --global user.name "your name"
-git config --global user.email "your email"
-```
-### Git忽略规则及.gitignore规则不生效的解决办法
+## 4. 新建或者克隆项目
+### 新建
+git init
+
+### 克隆
+git clone 地址
+
+## 5. 至此，愉快的开始吧~
+
+
+## 三、常见问题
+
+### 1. Git忽略规则及.gitignore规则不生效的解决办法
 有时候添加顾略规则会发现并不生效，原因是.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。那么解决方法就是先把本地缓存删除（改变成未track状态），然后再提交：
 ```git
 git rm -r --cached .
@@ -248,7 +285,7 @@ git commit -m 'update .gitignore'
 ```
 解决方法来自：http://www.pfeng.org/archives/840
 
-### 密码不小心提交到了远程分支
+### 2. 密码不小心提交到了远程分支
 当密码提交到远程分支以后，如果后来把文件加入忽略列表，但是以前的commit中还会留有密码文件。这个时候就得用到核弹级命令`git filter-branch`，之所以叫核弹级，是因为这个命令十分危险，理论上是可以对你的分支做任何操作。
 使用方法：
 1. 首先关闭远程分支的分支保护；
@@ -262,7 +299,7 @@ git push origin master --force
 ```
 4. 最后别忘了把远程分支又改回保护状态。
 
-### 修改commit的信息
+### 3. 修改commit的信息
 - 如果没有进行新的提交`git commit --amend`
 - 如果进行了新的提交`git reset --soft xxx`，xxx是提交ID，但是会把后面的提交都变成一次，因此最好不要这么使用。
 
