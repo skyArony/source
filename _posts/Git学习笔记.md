@@ -250,10 +250,7 @@ HostName github.com【主机名】
 User git【用户名】
 IdentityFile ~/.ssh/github【私钥路径】
 ```
-以上内容为一组，写入保存后即可用
-`
-ssh github.com 来进行连接测试。
-`
+以上内容为一组，写入保存后即可用 `ssh github.com` 来进行连接测试。
 
 ## SSH连接测试
 ```
