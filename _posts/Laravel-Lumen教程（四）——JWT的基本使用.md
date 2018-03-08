@@ -11,12 +11,14 @@ categories:
 - PHP
 - 框架
 thumbnail: http://osv9x79o9.bkt.clouddn.com/18-1-12/98107758.jpg
+
 ---
-　`主题有bug，标记`
+
 **JWT** 全称 **JSON Web Tokens** ，是一个非常轻巧的规范。这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。它的两大使用场景是：认证和数据交换。
 
 # 一、安装之前
 先摆出几个参考资料，可以把连接都打开，方便查阅：
+
 - [项目Wiki](https://github.com/tymondesigns/jwt-auth/wiki/Installation)
 - [公众号coding01](https://mp.weixin.qq.com/s/KVUQE2DUetNB2kqxHs0VDg)，[JWT安装及简单例子](https://juejin.im/post/5a0812a16fb9a0451704ad96)
 - [官方安装指导文档](http://jwt-auth.readthedocs.io/en/docs/laravel-installation/)
@@ -29,6 +31,7 @@ thumbnail: http://osv9x79o9.bkt.clouddn.com/18-1-12/98107758.jpg
 **命令行安装**
 
 执行
+
 ```
 // 建议使用1.0以上版本
 composer require tymon/jwt-auth 1.*@rc
@@ -37,11 +40,14 @@ composer require tymon/jwt-auth 1.*@rc
 **配置文件安装**
 
 打开 `composer.json` 文件,增加以下内容：
+
 ```php
 // 我当时可用的版本是这个
 "require": {"dingo/api":"1.*@rc"}
 ```
+
 执行
+
 ```
 composer update
 ```
@@ -51,6 +57,7 @@ composer update
 ### 2.1 取消一些行的注释
 #### Lumen ———— bootstrap/app.php 
 把以下的注释取消
+
 ```php
 // 如果你是安装教程一步一步来的，这一行应该前面已经取消了
 $app->withFacades();
@@ -67,6 +74,7 @@ $app->register(App\Providers\AuthServiceProvider::class);
 ### 2.2 添加服务提供者
 #### Lumen
 **bootstrap/app.php** 文件中，在服务提供者位置添加
+
 ```php
 // 有些文档里是说添加 Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class ，可能是以前版本的，我也不是很清楚
 $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
@@ -74,6 +82,7 @@ $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
 #### Laravel
 **config/app.php** 中 添加：
+
 ```php
 'providers' => [
     ...
@@ -84,6 +93,7 @@ $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 ### 2.3 发布配置文件到config文件夹
 
 #### Laravel
+
 ```
 php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
 ```
@@ -96,12 +106,15 @@ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServicePro
 除此之外，把 `\vendor\laravel\lumen-framework\config\auth.php` 也复制到 `config` 文件夹
 
 ### 2.4 配置jwt_secret
+
 ```
 php artisan jwt:secret
 ```
+
 执行后会在 `.env` 文件生成 `JWT_SECRET`
 
 ### 2.5 更新你的User模型
+
 ```php
 // 引入这个
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -133,6 +146,7 @@ public function getJWTCustomClaims()
 
 ### 2.6 配置 auth.php
 在这里，我们告诉 `api` guard 使用 `jwt` 驱动程序，我们将 `api` guard 设置为默认值。
+
 ```php
 'defaults' => [
     'guard' => 'api',
@@ -161,6 +175,7 @@ public function getJWTCustomClaims()
 # 三、简单demo
 
 ## 1. 新建 `AuthController`
+
 ```php
 <?php
 namespace App\Http\Controllers;
@@ -262,6 +277,7 @@ class AuthController extends Controller
 
 ## 2. 设定路由
 此处用了 `dingo` 的路由，`UserController` 的内容参考以前的教程
+
 ```php
 // dingo 使用自有的路由器，所以你需要先获取其实例
 $api = app('Dingo\Api\Routing\Router');
@@ -287,6 +303,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
 > 这里有一个十分令人疑惑的地方： `'middleware' => 'auth:api'`，你会发现把 `:api` 去掉也是没问题的，到底怎么回事？
  
 去文档看，这种 `路由名:参数` 的写法是用来传参的。但是这里并不是传参的，打开 `config/auth.php`：
+
 ```php
 'guards' => [
     'api' => [
@@ -296,6 +313,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
     'web' => []
 ],
 ```
+
 仔细想了想，终于理解了：在 `Laravel` 中有 `web.php`、`api.php` 等多个路由，这个几个路由会分别对应这 `guards` 中一个数组，而 `JWT` 用 `auth` 中间件，后面的 `:api` 就表示用 `guards` 中 `api` 数组指定的 `driver` 和 `provider`，当只有一个 `api` 数组的时候，就可以省去 `:api`。
 
 ## 3. `Token` 的获取、使用、删除和刷新
@@ -340,6 +358,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
 #### 头部（header）
 头部通常由两部分组成：令牌的类型（即JWT）和正在使用的散列算法（如HMAC SHA256 或 RSA.）。
 例如：
+
 ```json
 {
   "alg": "HS256",
@@ -351,6 +370,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
 
 #### 载荷（Payload）
 载荷中放置了 `token` 的一些基本信息，以帮助接受它的服务器来理解这个 `token`，载荷的属性也分三类：预定义（Registered）、公有（public）和私有（private），接下来主要介绍预定义的。
+
 ```json
 {
   "sub": "1",
@@ -361,6 +381,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
   "jti": "37c107e4609ddbcc9c096ea5ee76c667"
 }
 ```
+
 这里面的前6个字段都是由JWT的[标准](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32)所定义的，也就是预定义（Registered claims）的。
 
 > - sub: 该JWT所面向的用户
@@ -375,6 +396,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
 
 #### 签名（Signature）
 签名时需要用到前面编码过的两个字符串，如果以 `HMACSHA256` 加密，就如下：
+
 ```php
 HMACSHA256(
     base64UrlEncode(header) + "." +
@@ -382,9 +404,20 @@ HMACSHA256(
     secret
 )
 ```
-最后得到的字符串就是 `token` 的第三部分 `zzzzz`。
+
+加密后再进行 `base64url` 编码最后得到的字符串就是 `token` 的第三部分 `zzzzz`。
 
 组合便可以得到 `token：xxxxx.yyyyy.zzzzz`。
+
+PHP 代码示例
+```php
+// 这里要开启true
+$zzzzz = $this->base64url_encode(hash_hmac('sha256', 'xxxxx.yyyyy', getenv('JWT_SECRET'), true));
+
+protected function base64url_encode($data) {
+    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+```
 
 这里插一嘴签名的作用：保证 JWT 没有被篡改过，原理如下：
 > HMAC 算法是不可逆算法，类似 MD5 和 hash ，但多一个密钥，密钥（即上面的secret）由客户端和服务端共享，服务端把 token 发给客户端后，客户端可以把其中的头部和载荷再加上事先共享的 secret 再进行一次 HMAC 加密，得到的结果和 token 的第三段进行对比，如果一样则表明数据没有被篡改。
@@ -392,15 +425,18 @@ HMACSHA256(
 
 ### 4.2 `token` 的创建
 前面的 `AuthController.php` 中有两行展现了这一种 `token` 的创建方法，即用用户所给的账号和密码进行**尝试**，密码正确则用对应的 `User` 信息返回一个 `token` 。
+
 ```php
 // 用 request 中的 email 和 password ，验证后返回token
 $credentials = $request->only('email', 'password');
 $token = JWTAuth::attempt($credentials);
 ```
+
 但 `token` 的创建方法不止这一种，接下来介绍 `token` 的三种创建方法。
 
 #### a) 基于请求中的参数
 这就是刚刚说的哪一种，贴出具体代码。
+
 ```php
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -431,12 +467,15 @@ class AuthenticateController extends Controller
 
 #### b) 基于users表中的用户信息 + 数组
 基于用户信息，使用 `fromeUser` 方法。
+
 ```php
 $user = User::first();
 
 $token = JWTAuth::fromUser($user);
 ```
+
 基于用户信息 + 自定义的数组信息
+
 ```php
 $customClaims = ['foo' => 'bar', 'baz' => 'bob'];
 
@@ -451,16 +490,19 @@ $token = JWTAuth::customClaims($customClaims)->attempt($credentials) // 用JWTAu
 $token = JWTAuth::customClaims($customClaims)->fromUser($user)
 
 ```
+
 数组信息会在 `token` 解码时得到，同时越大的数组会生成越长的 `token` ，所以不建议放太多的数据。同时因为载荷是用 `Base64Url` 编码，所以相当于明文，因此绝对不能放密码等敏感信息。
 
 
 #### c) 基于任何你喜欢的东西，为更高级的定制提供了可能（这是从文档直接复制的，没做具体实验，以后用到这再更新）
 您可以将声明直接链接到 `Tymon\JWTAuth\PayloadFactory` 实例（或使用 `JWTFactory Facade` ）
+
 ```php
 $customClaims = ['foo' => 'bar', 'baz' => 'bob'];
 $payload = JWTFactory::make($customClaims);
 $token = JWTAuth::encode($payload);
 ```
+
 ```php
 // add a custom claim with a key of `foo` and a value of ['bar' => 'baz']
 $payload = JWTFactory::sub(123)->aud('foo')->foo(['bar' => 'baz'])->make();
@@ -470,28 +512,35 @@ $token = JWTAuth::encode($payload);
 
 ### 4.3 `token` 的解析
 #### a) 把 `token` 解析到对象，会返回一个对象
+
 ```php
-// this will set the token on the object
+// this will set the token on the object  把请求发送过来的直接解析到对象
 JWTAuth::parseToken();
 ```
 #### b) 获取到原先嵌入到 `token` 的 `user` 信息
+
 ```php
 // and you can continue to chain methods
 $user = JWTAuth::parseToken()->authenticate();
 // or
 $user = JWTAuth::parseToken()->toUser();
 ```
+
 #### c) 获取 `token` ，如果 `token` 被设置则会返回，否则会尝试使用方法从请求中解析 `token` ，如果token未被设置或不能解析最终返回false。
+
 ```php
 $token = JWTAuth::parseToken()->getToken();
 ```
+
 #### d) 甚至可以设置 `token` 。
+
 ```php
 JWTAuth::setToken('foo.bar.baz');
 ```
 
 #### e) 获取载荷
 `checkOrFail()` 或 `getPayload()` 或 `payload()`
+
 ```php
 // 获取所有载荷
 $payload = JWTAuth::parseToken()->getPayload()
@@ -510,6 +559,7 @@ JWTAuth::getClaim('exp')
 
 ### 5.1 区别
 #### 刷新 `token`
+
 ```php
 Auth::refresh();
 
@@ -517,6 +567,7 @@ JWTAuth::parseToken()->refresh();
 ```
 
 #### 注销 `token`
+
 ```php
 Auth::logout();
 
@@ -524,6 +575,7 @@ JWTAuth::parseToken()->invalidate();  // invalidate 还有部分参数可选
 ```
 
 #### 设置 `custom claims`
+
 ```php
 // 只发现 JWTAuth:: 可以做到
 $customClaims = ['xm' => 'yf', 'sex' => 'male'];
@@ -538,6 +590,7 @@ $token = JWTAuth::customClaims($customClaims)->attempt($credentials)
 
 #### 有效时间
 有效时间指的的是你获得 `token` 后，在多少时间内可以凭这个 `token` 去获取内容，逾时无效。
+
 ```php
 // 单位：分钟
 'ttl' => env('JWT_TTL', 60)
@@ -545,6 +598,7 @@ $token = JWTAuth::customClaims($customClaims)->attempt($credentials)
 
 #### 刷新时间
 刷新时间指的是在这个时间内可以凭旧 `token` 换取一个新 `token`。例如 `token` 有效时间为 60 分钟，刷新时间为 20160 分钟，在 60 分钟内可以通过这个 `token` 获取新 `token`，但是超过 60 分钟是不可以的，然后你可以一直循环获取，直到总时间超过 20160 分钟，不能再获取。
+
 ```php
 // 单位：分钟
 'refresh_ttl' => env('JWT_REFRESH_TTL', 20160)
@@ -586,6 +640,7 @@ $token = JWTAuth::customClaims($customClaims)->attempt($credentials)
 
 #### b) 有没有必要每次都刷新 `token` ？
 上面考虑的 15min ~ 120min，会存在一个问题，就是**重放攻击**风险，防御这个风险，在 `JWT` 可用的方案是每次请求后都刷新一次 `token` ，但这样又会存在一个新的问题：并发请求。一次并发请求是用的一个 `token` ，第一个完成的请求会导致后面的请求全部失败。可用的解决方案是设置**宽限时间**，即一个 `token` 刷新后，旧 `token` 仍然短暂的可用。可惜这样并不能完美的解决重放攻击，只是增大了不法者攻击的成本。这个问题在 `JWT` 中并没有很好的解决。
+
 ```php
 // 每次刷新的话需要用到第二个中间件
 // 第一个中间件和前面保护的路由的 auth 相同（猜的，我也不确定）
@@ -597,7 +652,8 @@ protected $routeMiddleware = [
 ```
 
 #### `token` 的刷新总结
-因为无法完全解决重放攻击，所以在因重放攻击会导致巨大安全问题和损失的地方，建议使用其他安全认证措施。而日常 `Api` 使用建议如下设置：  
+因为无法完全解决重放攻击，所以在因重放攻击会导致巨大安全问题和损失的地方，建议使用其他安全认证措施。而日常 `Api` 使用建议如下设置： 
+ 
 ```
 有效时间：15min ~ 120min
 刷新时间：7天 ~ 30天

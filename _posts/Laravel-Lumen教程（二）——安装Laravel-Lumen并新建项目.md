@@ -26,6 +26,7 @@ Linux 系统的一般在 `home/你的账户/` 里，如果是 deepin ，该目�
 Windows 系统不多说；
 
 Linux 系统（deepin）如下：
+
 ```
 cd /etc
 sudo vim bash.bashrc
@@ -40,11 +41,13 @@ source bash.bashrc
 # 二、安装
 
 ## Laravel
+
 ```
 composer global require "laravel/installer"
 ```
 
 ## Lumen
+
 ```
 composer global require "laravel/lumen-installer"
 ```
@@ -52,6 +55,7 @@ composer global require "laravel/lumen-installer"
 # 三、新建项目
 
 ## Laravel
+
 ```
 laravel new blog
 
@@ -61,6 +65,7 @@ composer create-project --prefer-dist laravel/laravel blog
 ```
 
 ## Lumen
+
 ```
 lumen new blog
 // 执行完上面一句，会发现没有 vendor 目录，需要在 blog 目录下
@@ -78,12 +83,16 @@ composer create-project --prefer-dist laravel/lumen blog
 ## 1. 加密key
 1. 修改 `.env.example` 文件为 `.env` ；
 2. 执行 `php artisan key:generate` 生成 `.env` 文件中的加密 key ，Lumen 中没有这个命令，可以用其他方法生成，例如：
+
   ```
   APP_KEY=base64:Dje+SgXpfHHxCuelIzeTnxtmcHZmoVCXk/PLoefUOW8=
   ```
 
+3. 可以安装 [flipbox/lumen-generator](https://packagist.org/packages/flipbox/lumen-generator) 增加 `lumen` 中缺失的 `Laravel` 中的 `aritisan` 命令。
+
 ## 2. 数据库
 打开 `.env` 文件
+
 ```php
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -95,6 +104,7 @@ DB_PASSWORD=root       // 密码
 
 ### 2.1 多数据库配置
 **.env**
+
 ```php
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -106,6 +116,7 @@ DB_PASSWORD=root       // 密码
 ```
 
 **config/database.php**
+
 ```php
 'mysql-passport' => [
     'driver' => 'mysql',
@@ -124,6 +135,7 @@ DB_PASSWORD=root       // 密码
 ```
 
 **migrate**
+
 ```php
 // users表，用户状态信息表
 Schema::connection('mysql-passport')->create('users', function (Blueprint $table) {
@@ -133,15 +145,18 @@ Schema::connection('mysql-passport')->create('users', function (Blueprint $table
 ```
 
 **ORM模型操作数据库时**
+
 ```php
 protected $connection = 'mysql-passport';  // 在该model中使用testdb2库
 protected $table = 'article';
 ```
 
 **DB Facade**
+
 ```php
 DB::connection('mysql-passport')->select(...);
 php
+```
 
 ## 3. nginx
 我这是 phpstudy 下的配置：
@@ -180,6 +195,7 @@ php
 
 ## 5. 其他一些配置
 打开 `bootstrap/app/php` ，把下面两行去掉注释，以开启 Facades 功能和 Eloquent 功能。
+
 ```
 $app->withFacades();
 
