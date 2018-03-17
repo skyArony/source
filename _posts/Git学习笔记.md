@@ -92,6 +92,14 @@ git checkout dev
 ### 解决冲突
 合并分支时，若分支之间存在冲突，那么就需要先解决冲突然后再进行合并
 
+
+### 强制覆盖本地，使用网络上的新状态
+
+```
+git fetch --all //只是下载代码到本地，不进行合并操作
+git reset --hard origin/master  //把HEAD指向最新下载的版本
+```
+
 ### 分支管理策略
 实际开发时，我们应该遵循一定的开发策略，以便于进行管理和开发。
 
@@ -158,6 +166,13 @@ git push origin test   #这样远程仓库中也就创建了一个test分支
 ```git
 git push <远程主机名> <本地分支名>:<远程分支名>
 git push -u origin master #参数带-u表示指定一个默认主机，以后就可以直接git push
+```
+
+### 查看远程分支和本地分支之间的追踪关系
+
+```
+git branch -vv
+git config --list
 ```
 
 ## 标签管理

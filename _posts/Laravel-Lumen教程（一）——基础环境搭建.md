@@ -43,7 +43,7 @@ thumbnail: http://osv9x79o9.bkt.clouddn.com/17-12-30/62162735.jpg
 直接下载最新版，和更新 mysql 一样备份、新建、粘贴即可。
 
 ## 4. 按上述操作存在的问题：
-1. mysql 更新后一直常驻服务中，phpstudy的控制器不能控制其关闭，不影响使用，介意的可以自行寻找解决办法；
+1. mysql 更新后一直常驻服务中，phpstudy的控制器不能控制其关闭，解决办法为到系统服务中设置mysql服务为手动模式，然后停止，然后在phpstudy上重启两个服务即可。
 
 ## 5. 安装 composer 环境
 Windows 下建议使用[自动安装程序](http://docs.phpcomposer.com/00-intro.html#Installation-Windows)，会自动配置好环境变量，比较方便。配置国内镜像地址什么的就不多说了。
