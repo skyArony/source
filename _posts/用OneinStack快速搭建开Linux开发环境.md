@@ -15,7 +15,7 @@ thumbnail:
 # 一、OneinStack 介绍
 OneinStack 是一个脚本，能够极度简便的安装服务器开发环境。直接看官网的介绍可能更明了一些。
 
-> - 持续不断更新
+- 持续不断更新
 - 源码编译安装，大多数源码是最新stable版，并从官方网址下载
 - 提供多个数据库版本(MySQL-5.7, MySQL-5.6, MySQL-5.5, MariaDB-10.1, MariaDB-10.0, MariaDB-5.5, Percona-5.7, Percona-5.6, Percona-5.5，AliSQL-5.6，PostgreSQL, MongoDB)
 - 提供多个PHP版本(PHP-7.2,PHP-7.1,PHP-7.0,PHP-5.6, PHP-5.5,PHP-5.4,PHP-5.3)
@@ -77,11 +77,22 @@ screen -S oneinstack
 
 ![](/用 OneinStack 快速搭建开 Linux 开发环境/安装完成.png)
 
+## 4. 软件安装位置和配置文件位置
+
+如果没有更改安装前的配置文件，那么安装完成后就如上图：
+
+- 软件：/usr/local
+- 数据： /data
+- 日志：/data/wwwlogs
+- 配置文件：/usr/local
 
 
 
+Opcache Control Panel URL：http://x.x.x.x/ocp.php
 
+phpMyAdmin：http://x.x.x.x/phpMyAdmin
 
+Create FTP virtual script：./pureftpd_vhost.sh
 
 
 
