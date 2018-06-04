@@ -3,8 +3,6 @@ title: 记一次完整的Linux环境配置
 date: 2018-03-16 00:00:45
 tags: 
 - Linux
-- 后端
-- 运维
 categories: 
 - 后端
 - Linux
@@ -57,7 +55,7 @@ rpm -Uvh install https://centos7.iuscommunity.org/ius-release.rpm
 - Python 3.6.4
 - Git 1.8.3.1
 - phpMyAdmin 4.7.9
-    
+  
 
 # 三、虚拟机配置
 
@@ -163,7 +161,7 @@ iproute2的出现旨在从功能上取代net-tools
 
 ### 4.6 ftp 和 lftp
 用于访问 ftp 服务器，`yum install ftp` 和 `yum install lftp` 安装。
- 
+
 ### 4.7 vsftp
 用户设置 ftp 账户，包名为 `vsftpd`，安装后设置开机启动然后启动。
 

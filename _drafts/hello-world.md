@@ -2,12 +2,12 @@
 title: Hello World
 date: 2017-08-12 20:28:54
 tags: 
-- 公众号
-- 微信
-- 开发记录
+- 这里一般只放技术关键字
 categories: 
-- 微信
-- 公众号
+- 后端
+- 工具
+- 快查
+- 杂文
 thumbnail: http://osv9x79o9.bkt.clouddn.com/17-7-10/15097578.jpg
 ---
 Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).

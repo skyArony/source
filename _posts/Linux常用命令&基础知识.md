@@ -3,8 +3,6 @@ title: Linux常用命令&基础知识
 date: 2018-02-13 00:44:40
 tags:
 - Linux
-- 后端
-- 运维
 categories: 
 - 后端
 - Linux
@@ -91,7 +89,7 @@ rpm  -qa mysql*
 #查询已安装的 mysql 包
 rpm -qa | grep mysql
 ```
-  
+
 **yum**
 
 ```shell
@@ -170,15 +168,15 @@ yum repolist
 
 ### 1.12 设置开机启动，重启，启动 —— systemctl
 
-| 任务 | 旧指令 | 新指令 | 
-| ---  | --- | --- | 
-| 使某服务自动启动 | chkconfig –level 3 httpd on | systemctl enable httpd.service | 
-| 使某服务不自动启动 | chkconfig –level 3 httpd off | systemctl disable httpd.service | 
-| 检查服务状态 | service httpd status | systemctl status httpd.service | 
-| 显示所有已启动的服务 | chkconfig –list  | systemctl list-units –type=service | 
-| 启动某服务 | service httpd start | systemctl start httpd.service | 
-| 停止某服务 | service httpd stop | systemctl stop httpd.service | 
-| 重启某服务 | service httpd restart | systemctl restart httpd.service | 
+| 任务 | 旧指令 | 新指令 |
+| ---  | --- | --- |
+| 使某服务自动启动 | chkconfig –level 3 httpd on | systemctl enable httpd.service |
+| 使某服务不自动启动 | chkconfig –level 3 httpd off | systemctl disable httpd.service |
+| 检查服务状态 | service httpd status | systemctl status httpd.service |
+| 显示所有已启动的服务 | chkconfig –list  | systemctl list-units –type=service |
+| 启动某服务 | service httpd start | systemctl start httpd.service |
+| 停止某服务 | service httpd stop | systemctl stop httpd.service |
+| 重启某服务 | service httpd restart | systemctl restart httpd.service |
 
 ```shell
 # 查看所有 systemd 服务
@@ -343,7 +341,7 @@ iproute2的出现旨在从功能上取代net-tools
 
 ### 1.6 ftp 和 lftp
 用于访问 ftp 服务器，`yum install ftp` 和 `yum install lftp` 安装。
- 
+
 ### 1.7 vsftp
 用户设置 ftp 账户，包名为 `vsftpd`，安装后设置开机启动然后启动。
 
@@ -483,7 +481,10 @@ passwd Test
 passwd
 ```
 
+
+
 ### 1.3 账户删除 —— userdel
+
 建议只有在账号真的确定不要使用的时候再删除，否则可以用各种方法让账户先失效。
 
 ```
@@ -492,6 +493,8 @@ userdel -r username
 ```
 
 一般账号使用一段时间后总会生成一些属于这个账号的文件，这些文件无法通过上面的命令删除，所以可以通过 `find / -user username` 找出来一一删除。
+
+
 
 ### 1.4 账户修改 —— chsh \ usermod
 使用这个命令可以修改账户的可用shell，有两个参数。
@@ -505,6 +508,9 @@ chsh -s /sbin/nologin
 
 # usermod 也可以
 usermod -s /bin/bash username
+
+# 添加用户的附加群组
+usermod -G groupname username
 ```
 
 ## 2. 文件所属、权限操作
